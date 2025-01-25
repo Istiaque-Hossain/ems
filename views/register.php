@@ -26,7 +26,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input id="password" class="form-control" type="password" required>
+                    <input id="password" class="form-control" type="password" name="password" required>
                 </div>
                 <button type="submit" name="register" class="btn btn-primary">Submit</button>
             </form>
