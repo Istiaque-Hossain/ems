@@ -1,15 +1,13 @@
-<?php include 'header.php'; ?>
-<!-- <form method="POST" action="process.php">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit" name="register">Register</button>
-</form> -->
+<?php
+include 'header.php';
 
-
-
-
-
+session_start();
+if (isset($_SESSION['user_id']))
+{
+    header('Location: dashboard.php');
+    exit;
+}
+?>
 
 
 <div class="container vh-100 d-flex flex-column align-items-center justify-content-center ">
@@ -30,6 +28,12 @@
                 </div>
                 <button type="submit" name="register" class="btn btn-primary">Submit</button>
             </form>
+
+            <div class="row my-4">
+                <div class="col">
+                    <a href="login.php">Already have an account! Login here</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

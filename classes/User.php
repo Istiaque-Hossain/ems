@@ -42,17 +42,17 @@ class User
 
     public function login($email, $password)
     {
-        var_dump('hi');
+        // var_dump('hi');
         $stmt = mysqli_prepare($this->db, "SELECT id, password FROM users WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
 
         $result = mysqli_stmt_get_result($stmt);
-        var_dump($result);
+        // var_dump($result);
 
         if ($row = mysqli_fetch_assoc($result))
         {
-            var_dump($row);
+            // var_dump($row);
             if (password_verify($password, $row['password']))
             {
                 $_SESSION['user_id'] = $row['id'];

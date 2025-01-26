@@ -1,20 +1,30 @@
-<?php include 'header.php'; ?>
+<?php
+include 'header.php';
+
+session_start();
+// var_dump($_SESSION['user_id']);
+// die();
+if (isset($_SESSION['user_id']))
+{
+    header('Location: dashboard.php');
+    exit;
+}
+?>
 
 
 <div class="container vh-100 d-flex flex-column align-items-center justify-content-center ">
 
     <?php
-    session_start(); // Start session at the top of your script
-    if (isset($_SESSION['error_message']))
+    if (isset($_SESSION['login_message']))
     {
-        echo '<div class="row w-100 justify-content-center "> <div class="col-md-6"> <div class="alert alert-danger">' . $_SESSION['error_message'] . '</div> </div></div>';
-        unset($_SESSION['error_message']); // Clear the message after displaying it
+        echo '<div class="row w-100 justify-content-center "> <div class="col-md-6"> <div class="alert alert-danger">' . $_SESSION['login_message'] . '</div> </div></div>';
+        unset($_SESSION['login_message']);
     }
 
     if (isset($_SESSION['reg_message']))
     {
         echo $_SESSION['reg_message'];
-        unset($_SESSION['reg_message']); // Clear the message after displaying it
+        unset($_SESSION['reg_message']);
     }
     ?>
 
@@ -33,6 +43,12 @@
                 </div>
                 <button type="submit" name="login" class="btn btn-primary">Submit</button>
             </form>
+
+            <div class="row my-4">
+                <div class="col">
+                    <a href="register.php">New! Register Here</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

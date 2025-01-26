@@ -1,4 +1,13 @@
-<?php include 'header.php'; ?>
+<?php
+include 'header.php';
+include 'auth.php';
+include 'db.php';
+
+require_once '../classes/Event.php';
+$event  = new Event($db);
+$events = $event->getAll();
+?>
+
 <h2>All Events</h2>
 <table class="table">
     <thead>
@@ -20,4 +29,5 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+
 <?php include 'footer.php'; ?>

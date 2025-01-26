@@ -23,13 +23,12 @@ elseif (isset($_POST['login']))
 {
     if ($user->login($_POST['email'], $_POST['password']))
     {
-        header('Location: /dashboard.php');
+        header('Location: views/dashboard.php');
     }
     else
     {
-        // echo 'Invalid login!';
-        $_SESSION['error_message'] = 'Invalid login!'; // Store error message in session
-        header('Location: ' . $_SERVER['HTTP_REFERER']); // Redirect to the previous page
+        $_SESSION['login_message'] = 'Invalid login!';
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit;
     }
 }

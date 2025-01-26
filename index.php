@@ -1,4 +1,4 @@
 <?php
 // Redirect to home.php
-header('Location: dashboard.php');
+header('Location: views/dashboard.php');
 exit;
