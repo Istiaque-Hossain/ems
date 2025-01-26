@@ -9,10 +9,27 @@
 </head>
 
 <body>
+
+    <!-- <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">EMS</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="btn btn-sm btn-danger" aria-current="page" href="logout.php">Logout</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header> -->
     <!-- <h1>Hello, world!</h1> -->
 
-    <!-- <h1 class="text-center bg-primary text-white py-3 rounded shadow-lg">
-        Event Management System
-    </h1> -->
 
-    <div class="container">
+
+    <!-- <div class="container py-2"> -->

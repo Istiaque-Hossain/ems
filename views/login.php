@@ -11,6 +11,10 @@ if (isset($_SESSION['user_id']))
 }
 ?>
 
+<h1 class="text-center bg-primary text-white py-3 rounded shadow-lg">
+    Event Management System
+</h1>
+
 
 <div class="container vh-100 d-flex flex-column align-items-center justify-content-center ">
 
