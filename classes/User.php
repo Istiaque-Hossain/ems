@@ -42,7 +42,7 @@ class User
 
     public function login($email, $password)
     {
-        $stmt = mysqli_prepare($this->db, "SELECT id, password FROM users WHERE email = ?");
+        $stmt = mysqli_prepare($this->db, "SELECT id, password, role FROM users WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
 
@@ -52,7 +52,8 @@ class User
         {
             if (password_verify($password, $row['password']))
             {
-                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['user_id']   = $row['id'];
+                $_SESSION['user_role'] = $row['role'];
                 return true;
             }
         }

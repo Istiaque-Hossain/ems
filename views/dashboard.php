@@ -1,11 +1,9 @@
 <?php
 include 'header.php';
 include 'auth.php';
-include 'db.php';
+// include 'db.php';
 
-require_once '../classes/Event.php';
-$event  = new Event($db);
-$events = $event->getAll();
+
 
 include 'nav.php';
 
@@ -85,6 +83,7 @@ include 'nav.php';
     <div class="row py-2">
         <div class="col-md-6">
             <h2>All Events</h2>
+            <?php echo $_SESSION['user_role']; ?>
         </div>
         <div class="col-md-6">
             <div class="row">

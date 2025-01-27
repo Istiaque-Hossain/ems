@@ -1,11 +1,48 @@
 <?php
 include 'db.php';
-$query = "SELECT * FROM events";
-$result = $db->query($query);
+require_once '../classes/Event.php';
+$event  = new Event($db);
+$events = $event->getAll();
 
-if ($result->num_rows > 0)
+// if (isset($events))
+// {
+//     echo '<table class="table">
+//             <thead>
+//                 <tr>
+//                     <th>Name</th>
+//                     <th>Description</th>
+//                     <th>Date</th>
+//                     <th>Time</th>
+//                     <th>Capacity</th>
+//                     <th>Action</th>
+//                 </tr>
+//             </thead>
+//             <tbody>';
+
+//     foreach ($events as $event)
+//     {
+//         echo '<tr>
+//                 <td>' . htmlspecialchars($event['name']) . '</td>
+//                 <td>' . htmlspecialchars($event['description']) . '</td>
+//                 <td>' . htmlspecialchars($event['date']) . '</td>
+//                 <td>' . htmlspecialchars($event['time']) . '</td>
+//                 <td>' . htmlspecialchars($event['max_capacity']) . '</td>
+//                 <td>
+//                     <button class="btn btn-warning btn-sm" onclick="openModal(' . $event['id'] . ')">Edit</button>
+//                     <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $event['id'] . ')">Delete</button>
+//                 </td>
+//             </tr>';
+//     }
+
+//     echo '</tbody></table>';
+// }
+// else
+// {
+//     echo '<h2>No data Found</h2>';
+// }
+if (isset($events))
 {
-    echo '<table class="table">
+    echo '<table id="eventsTable" class="table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -17,20 +54,22 @@ if ($result->num_rows > 0)
                 </tr>
             </thead>
             <tbody>';
-    while ($row = $result->fetch_assoc())
+
+    foreach ($events as $event)
     {
         echo '<tr>
-                <td>' . htmlspecialchars($row['name']) . '</td>
-                <td>' . htmlspecialchars($row['description']) . '</td>
-                <td>' . htmlspecialchars($row['date']) . '</td>
-                <td>' . htmlspecialchars($row['time']) . '</td>
-                <td>' . htmlspecialchars($row['max_capacity']) . '</td>
+                <td>' . htmlspecialchars($event['name']) . '</td>
+                <td>' . htmlspecialchars($event['description']) . '</td>
+                <td>' . htmlspecialchars($event['date']) . '</td>
+                <td>' . htmlspecialchars($event['time']) . '</td>
+                <td>' . htmlspecialchars($event['max_capacity']) . '</td>
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="openModal(' . $row['id'] . ')">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $row['id'] . ')">Delete</button>
+                    <button class="btn btn-warning btn-sm" onclick="openModal(' . $event['id'] . ')">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $event['id'] . ')">Delete</button>
                 </td>
             </tr>';
     }
+
     echo '</tbody></table>';
 }
 else
