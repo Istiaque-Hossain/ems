@@ -32,8 +32,8 @@ class Event
 
         if ($user_role == 'admin')
         {
-            $stmt = mysqli_prepare($this->db, "SELECT * FROM events WHERE ORDER BY date DESC");
-            mysqli_stmt_bind_param($stmt, "i", $user_id); // Bind the user ID parameter
+            $stmt = mysqli_prepare($this->db, "SELECT * FROM events ORDER BY date DESC");
+            // mysqli_stmt_bind_param($stmt, "i", $user_id); // Bind the user ID parameter
             mysqli_stmt_execute($stmt); // Execute the query
             $result = mysqli_stmt_get_result($stmt); // Get the result
         }
@@ -48,3 +48,5 @@ class Event
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 }
+
+// session_destroy();
