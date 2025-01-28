@@ -2,10 +2,8 @@
 include 'db.php';
 require_once '../classes/Event.php';
 
-$query = $_GET['query'];
-$event = new Event($db);
-$events = $event->search($query);
-
+$event  = new Event($db);
+$events = $event->getAll();
 
 if (!empty($events))
 {

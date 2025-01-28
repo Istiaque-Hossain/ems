@@ -2,8 +2,18 @@
 include 'db.php';
 require_once '../classes/Event.php';
 
-$event  = new Event($db);
-$events = $event->getAll();
+$event = new Event($db);
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$itemsPerPage = 5;
+
+// Get the events and total count
+$events = $event->getAll($page, $itemsPerPage);
+$totalCount = $event->getTotalCount();
+
+// Calculate total pages
+$totalPages = ceil($totalCount / $itemsPerPage);
+
+
 
 if (!empty($events))
 {
@@ -36,8 +46,20 @@ if (!empty($events))
     }
 
     echo '</tbody></table>';
+
+    // Generate pagination links
+    echo '<nav><ul class="pagination">';
+    for ($i = 1; $i <= $totalPages; $i++)
+    {
+        $active = ($i == $page) ? 'active' : '';
+        echo '<li class="page-item ' . $active . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+    }
+    echo '</ul></nav>';
 }
 else
 {
     echo '<h2>No data Found</h2>';
 }
+
+// var_dump($events);
+// die();

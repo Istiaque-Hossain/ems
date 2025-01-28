@@ -81,7 +81,7 @@ include 'nav.php';
         // Fetch all events
         function fetchEvents() {
             $.ajax({
-                url: 'fetch_events.php',
+                url: 'fetch_events.php?page=' + <?php echo isset($_GET['page']) ? (int)$_GET['page'] : 1; ?>,
                 method: 'GET',
                 success: function(data) {
                     $('#eventTable').html(data);
@@ -158,16 +158,23 @@ include 'nav.php';
             e.preventDefault();
             const query = $('#searchInput').val();
 
-            $.ajax({
-                url: 'search_event.php',
-                method: 'GET',
-                data: {
-                    query
-                },
-                success: function(data) {
-                    $('#eventTable').html(data);
-                }
-            });
+            if (!query) {
+                fetchEvents();
+
+            } else {
+
+                $.ajax({
+                    url: 'search_event.php',
+                    method: 'GET',
+                    data: {
+                        query
+                    },
+                    success: function(data) {
+                        $('#eventTable').html(data);
+                    }
+                });
+            }
+
         });
 
 
