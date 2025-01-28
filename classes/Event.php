@@ -143,4 +143,106 @@ class Event
         $result = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
+
+    public function getRegEvent()
+    {
+
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM events ORDER BY date DESC");
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    // public function regEvent($event_id, $name, $email)
+    // {
+    //     // var_dump($event_id, $name, $email);
+
+    //     // $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?,?,?)");
+    //     // mysqli_stmt_bind_param($stmt, "iss", $event_id, $name, $email);
+    //     // // mysqli_stmt_execute($stmt);
+
+    //     // if (mysqli_stmt_execute($stmt))
+    //     // {
+    //     //     mysqli_stmt_close($stmt);
+    //     //     return '<div class="row w-100 justify-content-center "> <div class="col-md-12"> <div class="alert alert-success"> Registration successful! </div> </div></div>';
+    //     // }
+    //     $stmt = mysqli_prepare($this->db, "SELECT id FROM events WHERE id = ?");
+    //     mysqli_stmt_bind_param($stmt, "i", $event_id);
+    //     mysqli_stmt_execute($stmt);
+    //     mysqli_stmt_store_result($stmt);
+
+    //     if (mysqli_stmt_num_rows($stmt) == 0)
+    //     {
+    //         throw new Exception("The event ID does not exist.");
+    //     }
+
+    //     mysqli_stmt_close($stmt);
+
+    //     // Proceed with registration
+    //     $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?, ?, ?)");
+    //     mysqli_stmt_bind_param($stmt, "iss", $event_id, $name, $email);
+    //     // mysqli_stmt_execute($stmt);
+    //     // mysqli_stmt_close($stmt);
+    //     if (mysqli_stmt_execute($stmt))
+    //     {
+    //         mysqli_stmt_close($stmt);
+    //         return '<div class="row w-100 justify-content-center "> <div class="col-md-12"> <div class="alert alert-success"> Registration successful! </div> </div></div>';
+    //     }
+    // }
+
+    public function regEvent($event_id, $name, $email)
+    {
+        try
+        {
+            // Check if the event ID exists
+            $stmt = mysqli_prepare($this->db, "SELECT id FROM events WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $event_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_store_result($stmt);
+
+            if (mysqli_stmt_num_rows($stmt) == 0)
+            {
+                mysqli_stmt_close($stmt);
+                throw new Exception("The event ID does not exist.");
+            }
+
+            mysqli_stmt_close($stmt);
+
+            // Insert the attendee record
+            $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, "iss", $event_id, $name, $email);
+
+            if (mysqli_stmt_execute($stmt))
+            {
+                mysqli_stmt_close($stmt);
+                return '<div class="row w-100 justify-content-center">
+                        <div class="col-md-12">
+                            <div class="alert alert-success"> Registration successful! </div>
+                        </div>
+                    </div>';
+            }
+            else
+            {
+                // Check for duplicate email error (MySQL error code 1062)
+                if (mysqli_errno($this->db) == 1062)
+                {
+                    throw new Exception("This email is already registered for the event.");
+                }
+                else
+                {
+                    throw new Exception("An error occurred during registration.");
+                }
+            }
+        }
+        catch (Exception $e)
+        {
+            // Return error message
+            return '<div class="row w-100 justify-content-center">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger"> ' . htmlspecialchars($e->getMessage()) . ' </div>
+                    </div>
+                </div>';
+        }
+    }
 }

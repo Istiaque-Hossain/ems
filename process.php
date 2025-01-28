@@ -32,3 +32,9 @@ elseif (isset($_POST['login']))
         exit;
     }
 }
+elseif (isset($_POST['eventReg']))
+{
+    $res = $event->regEvent($_POST['id'], $_POST['name'], $_POST['email']);
+    $_SESSION['reg_message'] =   $res;
+    header('Location: views/attendee.php');
+}
