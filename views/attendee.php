@@ -54,7 +54,7 @@ $events = $event->getRegEvent();
                                 <td>' . htmlspecialchars($event['description']) . '</td>
                                 <td>' . htmlspecialchars($event['date']) . '</td>
                                 <td>' . htmlspecialchars($event['time']) . '</td>
-                                <td>' . htmlspecialchars($event['max_capacity']) . '</td>
+                                <td>' . htmlspecialchars($event['max_capacity']) - htmlspecialchars($event['booked']) . '</td>
                                 <td>
                                 <button class="btn btn-warning btn-sm register-btn"
                                     data-id="' . htmlspecialchars($event['id']) . '"
@@ -116,7 +116,7 @@ $events = $event->getRegEvent();
             searching: true, // Adds a search box
             ordering: true, // Enables column sorting
             order: [
-                [2, 'asc']
+                [2, 'desc']
             ], // Sets the default sort column (Date) and order (ascending)
             pageLength: 10, // Number of rows per page
             lengthMenu: [5, 10, 25, 50], // Options for rows per page
@@ -129,15 +129,11 @@ $events = $event->getRegEvent();
     });
 
     $(document).ready(function() {
-        // Handle the click event of the "Register" button
         $(document).on('click', '.register-btn', function() {
-            const eventId = $(this).data('id'); // Get the event ID from the data attribute
-            const eventName = $(this).data('name'); // Get the event name if needed
+            const eventId = $(this).data('id');
+            const eventName = $(this).data('name');
 
-            // Populate the hidden input field in the modal with the event ID
             $('#eventId').val(eventId);
-
-            // Optionally, update the modal title or any other fields with event data
             $('#eventModalLabel').text(`Register for Event: ${eventName}`);
         });
     });

@@ -6,13 +6,10 @@ $event = new Event($db);
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $itemsPerPage = 5;
 
-// Get the events and total count
 $events = $event->getAll($page, $itemsPerPage);
 $totalCount = $event->getTotalCount();
 
-// Calculate total pages
 $totalPages = ceil($totalCount / $itemsPerPage);
-
 
 
 if (!empty($events))
@@ -56,7 +53,6 @@ if (!empty($events))
 
     echo '</tbody></table>';
 
-    // Generate pagination links
     echo '<nav><ul class="pagination">';
     for ($i = 1; $i <= $totalPages; $i++)
     {
@@ -69,6 +65,3 @@ else
 {
     echo '<h2>No data Found</h2>';
 }
-
-// var_dump($events);
-// die();

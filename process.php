@@ -14,8 +14,6 @@ if (isset($_POST['register']))
 {
     $res = $user->register($_POST['username'], $_POST['email'], $_POST['password']);
 
-    // var_dump('hi');
-    // dead_db(  )
     $_SESSION['reg_message'] =   $res;
     header('Location: views/login.php');
 }

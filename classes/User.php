@@ -8,25 +8,15 @@ class User
         $this->db = $db;
     }
 
-    // public function register($username, $email, $password)
-    // {
-    //     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    //     $stmt = mysqli_prepare($this->db, "INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-    //     mysqli_stmt_bind_param($stmt, "sss", $username, $email, $hashedPassword);
-    //     mysqli_stmt_execute($stmt);
-    //     mysqli_stmt_close($stmt);
-    // }
     public function register($username, $email, $password)
     {
         try
         {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-            // Prepare the statement
             $stmt = mysqli_prepare($this->db, "INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "sss", $username, $email, $hashedPassword);
 
-            // Execute the statement
             if (mysqli_stmt_execute($stmt))
             {
                 mysqli_stmt_close($stmt);

@@ -98,7 +98,7 @@ class Event
     public function getRegEvent()
     {
 
-        $stmt = mysqli_prepare($this->db, "SELECT * FROM events ORDER BY date DESC");
+        $stmt = mysqli_prepare($this->db, "SELECT * FROM events WHERE max_capacity>booked ORDER BY date DESC");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
 
@@ -109,17 +109,26 @@ class Event
     {
         try
         {
-            $stmt = mysqli_prepare($this->db, "SELECT id FROM events WHERE id = ?");
+            $stmt = mysqli_prepare($this->db, "SELECT booked FROM events WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $event_id);
             mysqli_stmt_execute($stmt);
-            mysqli_stmt_store_result($stmt);
+            $result = mysqli_stmt_get_result($stmt);
 
-            if (mysqli_stmt_num_rows($stmt) == 0)
+            if ($event = mysqli_fetch_assoc($result))
+            {
+                $booked = $event['booked'];
+            }
+            else
             {
                 mysqli_stmt_close($stmt);
                 throw new Exception("The event ID does not exist.");
             }
+            mysqli_stmt_close($stmt);
 
+            $booked++;
+            $stmt = mysqli_prepare($this->db, "UPDATE events SET booked = ? WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "ii", $booked, $event_id);
+            mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
 
             $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?, ?, ?)");
@@ -136,6 +145,7 @@ class Event
             }
             else
             {
+                mysqli_stmt_close($stmt);
                 if (mysqli_errno($this->db) == 1062)
                 {
                     throw new Exception("This email is already registered for the event.");
@@ -155,6 +165,7 @@ class Event
                 </div>';
         }
     }
+
 
     public function downloadCSV($event_id)
     {

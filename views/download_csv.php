@@ -6,6 +6,3 @@ $id = $_POST['eventId'];
 
 $event  = new Event($db);
 $events = $event->downloadCSV($id);
-
-var_dump($events);
-die();

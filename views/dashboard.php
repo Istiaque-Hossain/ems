@@ -131,21 +131,6 @@ include 'nav.php';
             }
         };
 
-        // Delete Event
-        // window.dwnCsv = function(id) {
-        //     $.ajax({
-        //         url: 'download_csv.php',
-        //         method: 'POST',
-        //         data: {
-        //             id: id
-        //         },
-        //         success: function() {
-        //             console.log('ok');
-
-        //         }
-        //     });
-        // };
-
         // Edit Event
         window.openModal = function(id) {
             $.ajax({
@@ -192,22 +177,6 @@ include 'nav.php';
 
         });
 
-
-        // $('#eventsTable').DataTable({
-        //     paging: true, // Enables pagination
-        //     searching: true, // Adds a search box
-        //     ordering: true, // Enables column sorting
-        //     order: [
-        //         [2, 'asc']
-        //     ], // Sets the default sort column (Date) and order (ascending)
-        //     pageLength: 10, // Number of rows per page
-        //     lengthMenu: [5, 10, 25, 50], // Options for rows per page
-        //     columnDefs: [{
-        //             orderable: false,
-        //             targets: 5
-        //         } // Disable sorting for the 'Action' column
-        //     ]
-        // });
     });
 </script>
 

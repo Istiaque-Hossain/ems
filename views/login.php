@@ -2,8 +2,7 @@
 include 'header.php';
 
 session_start();
-// var_dump($_SESSION['user_id']);
-// die();
+
 if (isset($_SESSION['user_id']))
 {
     header('Location: dashboard.php');
@@ -31,8 +30,6 @@ if (isset($_SESSION['user_id']))
         unset($_SESSION['reg_message']);
     }
     ?>
-
-
 
     <div class="row w-100 justify-content-center ">
         <div class="col-md-6 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
