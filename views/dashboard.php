@@ -131,6 +131,21 @@ include 'nav.php';
             }
         };
 
+        // Delete Event
+        // window.dwnCsv = function(id) {
+        //     $.ajax({
+        //         url: 'download_csv.php',
+        //         method: 'POST',
+        //         data: {
+        //             id: id
+        //         },
+        //         success: function() {
+        //             console.log('ok');
+
+        //         }
+        //     });
+        // };
+
         // Edit Event
         window.openModal = function(id) {
             $.ajax({

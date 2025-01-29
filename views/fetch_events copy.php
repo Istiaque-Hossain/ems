@@ -30,12 +30,20 @@ if (!empty($events))
                 <td>' . htmlspecialchars($event['max_capacity']) . '</td>
                 <td>
                     <button class="btn btn-warning btn-sm" onclick="openModal(' . $event['id'] . ')">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $event['id'] . ')">Delete</button>
-                </td>
+                    <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $event['id'] . ')">Delete</button>';
+
+        if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin')
+        {
+            echo ' <button class="btn btn-warning btn-sm" onclick="dwnCsv(' . $event['id'] . ')">Edit</button>';
+        }
+
+        echo '</td>
             </tr>';
     }
 
     echo '</tbody></table>';
+
+    echo '<h1>hi</h1>'
 }
 else
 {

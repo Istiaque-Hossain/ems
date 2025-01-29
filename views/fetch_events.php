@@ -40,8 +40,17 @@ if (!empty($events))
                 <td>' . htmlspecialchars($event['max_capacity']) . '</td>
                 <td>
                     <button class="btn btn-warning btn-sm" onclick="openModal(' . $event['id'] . ')">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $event['id'] . ')">Delete</button>
-                </td>
+                    <button class="btn btn-danger btn-sm" onclick="deleteEvent(' . $event['id'] . ')">Delete</button>';
+
+        if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin')
+        {
+
+            echo '<form class="d-inline" action="download_csv.php" method="post">
+                    <input type="hidden" name="eventId" value="' . $event['id'] . '">
+                    <button class="btn btn-success btn-sm" type="submit"> Attendee(.csv) </button>
+                  </form> ';
+        }
+        echo '</td>
             </tr>';
     }
 

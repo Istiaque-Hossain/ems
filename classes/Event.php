@@ -25,37 +25,11 @@ class Event
         mysqli_stmt_close($stmt);
     }
 
-    // public function getAll()
-    // {
-    //     $user_id = $_SESSION['user_id'];
-    //     $user_role = $_SESSION['user_role']; // Assuming the role is stored in the session (e.g., 'admin' or 'user')
-
-    //     if ($user_role == 'admin')
-    //     {
-    //         $stmt = mysqli_prepare($this->db, "SELECT * FROM events ORDER BY date DESC");
-    //         // mysqli_stmt_bind_param($stmt, "i", $user_id); // Bind the user ID parameter
-    //         mysqli_stmt_execute($stmt); // Execute the query
-    //         $result = mysqli_stmt_get_result($stmt); // Get the result
-    //     }
-    //     else
-    //     {
-    //         $stmt = mysqli_prepare($this->db, "SELECT * FROM events WHERE created_by = ? ORDER BY date DESC");
-    //         mysqli_stmt_bind_param($stmt, "i", $user_id); // Bind the user ID parameter
-    //         mysqli_stmt_execute($stmt); // Execute the query
-    //         $result = mysqli_stmt_get_result($stmt); // Get the result
-    //     }
-
-    //     return mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // }
-
     public function getAll($page = 1, $itemsPerPage = 10)
     {
         $offset    = ($page - 1) * $itemsPerPage;
         $user_id   = $_SESSION['user_id'];
         $user_role = $_SESSION['user_role'];
-
-        // var_dump($offset);
-        // die();
 
         if ($user_role == 'admin')
         {
@@ -68,26 +42,8 @@ class Event
             mysqli_stmt_bind_param($stmt, "iii", $user_id, $itemsPerPage, $offset);
         }
 
-
-
-        // if ($user_role == 'admin')
-        // {
-        // }
-
-
-
-
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-
-
-        // var_dump($itemsPerPage, $offset, $result, mysqli_fetch_all($result, MYSQLI_ASSOC));
-        // die();
-
-        // $query      = "SELECT * FROM events ORDER BY date DESC LIMIT ? OFFSET lal";
-        // $finalQuery = str_replace(['?', 'lal'], [$itemsPerPage, $offset], $query);
-        // var_dump(mysqli_fetch_all($result, MYSQLI_ASSOC));
-        // die();
 
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
@@ -118,24 +74,19 @@ class Event
 
     public function search($query)
     {
-        // if (is_null($query))
-        // {
-        //     header('Location:views/dashboard.php');
-        // }
-
         $user_id   = $_SESSION['user_id'];
         $user_role = $_SESSION['user_role'];
 
         if ($user_role == 'admin')
         {
             $stmt = mysqli_prepare($this->db, "SELECT * FROM events WHERE (name LIKE ? OR description LIKE ?) ORDER BY date DESC ");
-            $searchQuery = "%" . $query . "%"; // Prepare search query with wildcards for LIKE
+            $searchQuery = "%" . $query . "%";
             mysqli_stmt_bind_param($stmt, "ss", $searchQuery, $searchQuery);
         }
         else
         {
             $stmt = mysqli_prepare($this->db, "SELECT * FROM events WHERE (name LIKE ? OR description LIKE ?) AND created_by = ? ORDER BY date DESC ");
-            $searchQuery = "%" . $query . "%"; // Prepare search query with wildcards for LIKE
+            $searchQuery = "%" . $query . "%";
             mysqli_stmt_bind_param($stmt, "ssi", $searchQuery, $searchQuery, $user_id);
         }
 
@@ -154,48 +105,10 @@ class Event
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
-    // public function regEvent($event_id, $name, $email)
-    // {
-    //     // var_dump($event_id, $name, $email);
-
-    //     // $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?,?,?)");
-    //     // mysqli_stmt_bind_param($stmt, "iss", $event_id, $name, $email);
-    //     // // mysqli_stmt_execute($stmt);
-
-    //     // if (mysqli_stmt_execute($stmt))
-    //     // {
-    //     //     mysqli_stmt_close($stmt);
-    //     //     return '<div class="row w-100 justify-content-center "> <div class="col-md-12"> <div class="alert alert-success"> Registration successful! </div> </div></div>';
-    //     // }
-    //     $stmt = mysqli_prepare($this->db, "SELECT id FROM events WHERE id = ?");
-    //     mysqli_stmt_bind_param($stmt, "i", $event_id);
-    //     mysqli_stmt_execute($stmt);
-    //     mysqli_stmt_store_result($stmt);
-
-    //     if (mysqli_stmt_num_rows($stmt) == 0)
-    //     {
-    //         throw new Exception("The event ID does not exist.");
-    //     }
-
-    //     mysqli_stmt_close($stmt);
-
-    //     // Proceed with registration
-    //     $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?, ?, ?)");
-    //     mysqli_stmt_bind_param($stmt, "iss", $event_id, $name, $email);
-    //     // mysqli_stmt_execute($stmt);
-    //     // mysqli_stmt_close($stmt);
-    //     if (mysqli_stmt_execute($stmt))
-    //     {
-    //         mysqli_stmt_close($stmt);
-    //         return '<div class="row w-100 justify-content-center "> <div class="col-md-12"> <div class="alert alert-success"> Registration successful! </div> </div></div>';
-    //     }
-    // }
-
     public function regEvent($event_id, $name, $email)
     {
         try
         {
-            // Check if the event ID exists
             $stmt = mysqli_prepare($this->db, "SELECT id FROM events WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $event_id);
             mysqli_stmt_execute($stmt);
@@ -209,7 +122,6 @@ class Event
 
             mysqli_stmt_close($stmt);
 
-            // Insert the attendee record
             $stmt = mysqli_prepare($this->db, "INSERT INTO attendees (event_id, name, email) VALUES (?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "iss", $event_id, $name, $email);
 
@@ -224,7 +136,6 @@ class Event
             }
             else
             {
-                // Check for duplicate email error (MySQL error code 1062)
                 if (mysqli_errno($this->db) == 1062)
                 {
                     throw new Exception("This email is already registered for the event.");
@@ -237,12 +148,56 @@ class Event
         }
         catch (Exception $e)
         {
-            // Return error message
             return '<div class="row w-100 justify-content-center">
                     <div class="col-md-12">
                         <div class="alert alert-danger"> ' . htmlspecialchars($e->getMessage()) . ' </div>
                     </div>
                 </div>';
+        }
+    }
+
+    public function downloadCSV($event_id)
+    {
+        try
+        {
+            $stmt = mysqli_prepare($this->db, "SELECT name, email FROM attendees WHERE event_id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $event_id);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+
+            $stmt = mysqli_prepare($this->db, "SELECT name FROM events WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $event_id);
+            mysqli_stmt_execute($stmt);
+            $result2 = mysqli_stmt_get_result($stmt);
+
+            $event = mysqli_fetch_assoc($result2);
+            $eventName = $event['name'];
+
+
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $eventName . '_attendees.csv"');
+
+            $output = fopen('php://output', 'w');
+
+            fputcsv($output, ['Name', 'Email']);
+
+            while ($row = mysqli_fetch_assoc($result))
+            {
+                fputcsv($output, $row);
+            }
+
+            fclose($output);
+            mysqli_stmt_close($stmt);
+
+            exit();
+        }
+        catch (Exception $e)
+        {
+            return '<div class="row w-100 justify-content-center">
+                <div class="col-md-12">
+                    <div class="alert alert-danger"> ' . htmlspecialchars($e->getMessage()) . ' </div>
+                </div>
+            </div>';
         }
     }
 }
