@@ -50,6 +50,10 @@ if (isset($_SESSION['user_id']))
                     <a href="register.php">New! Register Here</a>
                 </div>
             </div>
+
+            <a href="attendee.php" name="login" class="btn btn-warning w-100"> <strong>Event Register</strong> </a>
+
+
         </div>
     </div>
 </div>
